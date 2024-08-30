@@ -35,7 +35,7 @@ const createSubscription = async () => {
       },
       body: JSON.stringify({
         changeType: "created",
-        notificationUrl: "https://your-server.com/api/notifications",
+        notificationUrl: "https://azure-test-wm8u.onrender.com",
         resource: "/users",
         expirationDateTime: new Date(
           new Date().getTime() + 3600 * 1000
