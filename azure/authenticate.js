@@ -40,7 +40,7 @@ const createSubscription = async () => {
         expirationDateTime: new Date(
           new Date().getTime() + 3600 * 1000
         ).toISOString(),
-        // clientState: "secretClientValue",
+        clientState: "secretClientValue",
       }),
     }
   );
