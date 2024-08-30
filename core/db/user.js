@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const Riderschema = new schema({
-  firstname: {
+  displayName: {
     type: String,
   },
-  lastname : {
+  userPrincipalName : {
     type: String,
   },
   email: {

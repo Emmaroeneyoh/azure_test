@@ -1,52 +1,44 @@
-const msal = require("@azure/msal-node");
-const fetch = require("isomorphic-fetch");
-const { clientSecret, clientId ,  authority} = require("../utils");
+const { getAccessToken } = require("../../azure/authenticate");
+const { userModel } = require("../../core/db/user");
 
-console.log('posi' , clientSecret, clientId ,  authority)
-const msalConfig = {
-  auth: {
-    clientId: clientId,
-    authority:  `https://login.microsoftonline.com/${authority}`,
-    clientSecret: clientSecret,
-  },
-};
-
-const cca = new msal.ConfidentialClientApplication(msalConfig);
-
-const getAccessToken = async () => {
-  const authResult = await cca.acquireTokenByClientCredential({
-    scopes: ["https://graph.microsoft.com/.default"],
-  });
-  return authResult.accessToken;
-};
-
-const createSubscription = async () => {
-    const accessToken = await getAccessToken();
-  const response = await fetch(
-    "https://graph.microsoft.com/v1.0/subscriptions",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        changeType: "created",
-        notificationUrl: "https://your-server.com/api/notifications",
-        resource: "/users",
-        expirationDateTime: new Date(
-          new Date().getTime() + 3600 * 1000
-        ).toISOString(),
-        clientState: "secretClientValue",
-      }),
+const usercreateaddressController = async (req, res, next) => {
+  try {
+    const { validationToken } = req.query;
+    if (validationToken) {
+      return res.status(200).send(validationToken); // Validate subscription
     }
-  );
 
-  const subscription = await response.json();
-  console.log('subscritpion' ,subscription);
+    const { value } = req.body;
+    const accessToken = await getAccessToken();
+
+    value.forEach(async (notification) => {
+      const userResponse = await fetch(
+        `https://graph.microsoft.com/v1.0${notification.resource}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const user = await userResponse.json();
+     console.log('this is user' , user)
+      const newUser = new userModel({
+        displayName: user.displayName,
+        userPrincipalName: user.userPrincipalName,
+        email: user.mail,
+        // Add other fields as necessary
+      });
+
+      await newUser.save();
+    });
+
+    res.sendStatus(202);
+  } catch (error) {
+    console.log('ths is error ' ,error);
+    return handleError(error.message)(res);
+  }
 };
 
 module.exports = {
-  createSubscription,
-  getAccessToken,
-};
+    usercreateaddressController
+}
