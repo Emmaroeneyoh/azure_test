@@ -3,6 +3,7 @@ const { userModel } = require("../../core/db/user");
 
 const usercreateaddressController = async (req, res, next) => {
   try {
+    console.log('azureing tyeu' , req.body)
     const { validationToken } = req.query;
     if (validationToken) {
       return res.status(200).send(validationToken); // Validate subscription
