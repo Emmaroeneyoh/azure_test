@@ -50,7 +50,16 @@ const usercreateaddressController = async (req, res, next) => {
     return handleError(error.message)(res);
   }
 };
+const usertestapiController = async (req, res, next) => {
+  try {
+    console.log('working')
+    return res.status(200).send("polisksu"); // Validate subscription
+  } catch (error) {
+    console.log('this is error', error);
+    return handleError(error.message)(res);
+  }
+};
 
 module.exports = {
-  usercreateaddressController
+  usercreateaddressController , usertestapiController
 };
