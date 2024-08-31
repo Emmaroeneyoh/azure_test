@@ -5,7 +5,7 @@ const usercreateaddressController = async (req, res, next) => {
   try {
     console.log('azureing tyeu' , req.body)
     const { validationToken } = req.query;
-    console.log('method' , req.method,"token" ,validationToken)
+    console.log('method' , req.method,"query" ,req.query)
     if (validationToken) {
       res.setHeader('Content-Type', 'text/plain');
       return res.status(200).send(validationToken); // Validate subscription
