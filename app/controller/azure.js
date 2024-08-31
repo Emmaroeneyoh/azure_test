@@ -7,6 +7,7 @@ const usercreateaddressController = async (req, res, next) => {
     const { validationToken } = req.query;
     console.log('method' , req.method,"token" ,validationToken)
     if (validationToken) {
+      res.setHeader('Content-Type', 'text/plain');
       return res.status(200).send(validationToken); // Validate subscription
     }
 
