@@ -5,7 +5,7 @@ const usercreateaddressController = async (req, res, next) => {
   try {
     console.log('azureing tyeu' , req.body)
     const { validationToken } = req.query;
-    console.log('azureing tyeu' , validationToken)
+    console.log('method' , req.method,"token" ,validationToken)
     if (validationToken) {
       return res.status(200).send(validationToken); // Validate subscription
     }
@@ -54,7 +54,7 @@ const usercreateaddressController = async (req, res, next) => {
 };
 const usertestapiController = async (req, res, next) => {
   try {
-    console.log('working')
+    console.log('working' , req.method)
     return res.status(200).send("polisksu"); // Validate subscription
   } catch (error) {
     console.log('this is error', error);
