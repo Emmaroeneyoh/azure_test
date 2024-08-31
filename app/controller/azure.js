@@ -54,8 +54,8 @@ const usercreateaddressController = async (req, res, next) => {
 };
 const usertestapiController = async (req, res, next) => {
   try {
-    console.log('working' , req.method)
-    return res.status(200).send("polisksu"); // Validate subscription
+    console.log(' new seriesworking' , req.method)
+    return res.status(200).send("new changes"); // Validate subscription
   } catch (error) {
     console.log('this is error', error);
     return handleError(error.message)(res);
